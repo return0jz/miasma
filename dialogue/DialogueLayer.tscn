@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://dialogue/DialogueLayer.gd" type="Script" id=2]
+
+[sub_resource type="Theme" id=3]
+
+[sub_resource type="DynamicFontData" id=4]
+antialiased = false
+font_path = "res://globalres/joystix.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+font_data = SubResource( 4 )
+
+[sub_resource type="Theme" id=6]
+RichTextLabel/fonts/normal_font = SubResource( 5 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://globalres/manaspc.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+font_data = SubResource( 7 )
+
+[sub_resource type="Theme" id=9]
+RichTextLabel/fonts/normal_font = SubResource( 8 )
+
+[sub_resource type="Animation" id=1]
+resource_name = "ArrowAnimation"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 488, 167 ), Vector2( 488, 160 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 488, 104 ) ]
+}
+
+[node name="DialogueLayer" type="CanvasLayer"]
+pause_mode = 2
+script = ExtResource( 2 )
+
+[node name="DialogueBox" type="ColorRect" parent="."]
+margin_left = 64.0
+margin_top = 256.0
+margin_right = 576.0
+margin_bottom = 448.0
+theme = SubResource( 3 )
+color = Color( 0, 0, 0, 0.611765 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="RichTextLabel" parent="DialogueBox"]
+margin_left = 9.0
+margin_top = 8.0
+margin_right = 225.0
+margin_bottom = 32.0
+theme = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="RichTextLabel" parent="DialogueBox"]
+margin_left = 10.0
+margin_top = 42.0
+margin_right = 504.0
+margin_bottom = 184.0
+theme = SubResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Arrow" type="Polygon2D" parent="DialogueBox"]
+position = Vector2( 488, 104 )
+color = Color( 1, 1, 1, 0.431373 )
+polygon = PoolVector2Array( 0, 0, 8, 16, 11.2279, 9.5442, 16, 0, 16, 0 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="DialogueBox/Arrow"]
+autoplay = "ArrowAnimation"
+anims/ArrowAnimation = SubResource( 1 )
+anims/RESET = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="DialogueBox"]
+one_shot = true

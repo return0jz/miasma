@@ -1,6 +1,64 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://player/weapons/Claw.gd" type="Script" id=1]
+[ext_resource path="res://player/assets/weapon.png" type="Texture" id=2]
+[ext_resource path="res://player/assets/playerlight.png" type="Texture" id=3]
+[ext_resource path="res://player/assets/hit.wav" type="AudioStream" id=4]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 0, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 64, 64, 64 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 2 )
+region = Rect2( 64, 64, 64, 64 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
+"loop": true,
+"name": "idle",
+"speed": 1.0
+} ]
 
 [node name="Claw" type="Node2D"]
 script = ExtResource( 1 )
+heart_animated_path = NodePath("HeartAnimated")
+attack_timer_path = NodePath("AttackTimer")
+delay_timer_path = NodePath("DelayTimer")
+hit_sound_path = NodePath("Hit")
+bobble = 5.0
+damage = 5.0
+
+[node name="HeartAnimated" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -54.1766 )
+frames = SubResource( 5 )
+animation = "idle"
+
+[node name="HeartLight" type="Light2D" parent="HeartAnimated"]
+position = Vector2( -1.17667, -1.45047 )
+scale = Vector2( 0.160279, 0.160279 )
+texture = ExtResource( 3 )
+color = Color( 0.176471, 0, 0, 1 )
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="DelayTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="Hit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[connection signal="timeout" from="AttackTimer" to="." method="_on_AttackTimer_timeout"]
+[connection signal="timeout" from="DelayTimer" to="." method="_on_DelayTimer_timeout"]

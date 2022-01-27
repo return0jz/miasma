@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://levels/opening/BackgroundColor.gd" type="Script" id=1]
+[ext_resource path="res://dialogue/DialogueLayer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://levels/dialog.wav" type="AudioStream" id=3]
+[ext_resource path="res://levels/opening/opening.gd" type="Script" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Fadein"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Music:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ -80.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Fadeout"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Music:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, -80.0 ]
+}
+
+[sub_resource type="Animation" id=2]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Music:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ -80.0 ]
+}
+
+[node name="Opening" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 4 )
+
+[node name="BackgroundColor" type="ColorRect" parent="."]
+margin_right = 640.0
+margin_bottom = 480.0
+color = Color( 0, 0, 0, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogueLayer" parent="." instance=ExtResource( 2 )]
+dialogue_path = "res://dialogue/opening.json"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -80.0
+autoplay = true
+
+[node name="Fade" type="AnimationPlayer" parent="."]
+autoplay = "Fadein"
+anims/Fadein = SubResource( 1 )
+anims/Fadeout = SubResource( 3 )
+anims/RESET = SubResource( 2 )
+
+[node name="Switch" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="terminate" from="DialogueLayer" to="." method="_on_DialogueLayer_terminate"]
+[connection signal="timeout" from="Switch" to="." method="_on_Switch_timeout"]
+
+[editable path="DialogueLayer"]

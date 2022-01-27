@@ -7,9 +7,14 @@ func enter(data: Dictionary = {}):
 	jump_counter = float(self.player.jump_dur)/1000 # jump_dur in milliseconds
 	self.player.vel.y = -self.player.jump_speed
 	self.player.animated.play("jump")
+	self.player.jump_sound.play()
 
 func physics_update(delta: float):
-	self.player.animated.play("jump")
+	if player.play_attack:
+		self.player.animated.play("jump_attack")
+	else:      
+		self.player.animated.play("jump")
+		
 	if (self.jump_counter) <= 0 || Input.is_action_just_released("jump"):
 		is_held = false
 	if Input.is_action_just_released("jump") && (self.player.vel.y < -self.player.jump_release_speed):

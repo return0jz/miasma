@@ -7,9 +7,16 @@ func physics_update(delta):
 	transitions()
 		
 	if self.player.is_on_floor() == false:
-		self.player.animated.play("jump")
+		if self.player.play_attack:
+			self.player.animated.play("jump_attack")
+		else:
+			self.player.animated.play("jump")
 	elif self.player.is_on_floor():
-		self.player.animated.play("idle")
+		if self.player.play_attack:
+			self.player.animated.play("idle_attack")
+		else:
+			self.player.animated.play("idle")
+	
 
 func transitions():
 	if Input.is_action_just_pressed("jump") && self.player.is_on_floor():

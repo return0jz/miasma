@@ -3,7 +3,7 @@ extends Node
 
 var state_machine = null; # set in FSM
 
-func update(delta: float) -> void:
+func update(_delta: float) -> void:
 	pass
 
 func physics_update(delta: float) -> void:

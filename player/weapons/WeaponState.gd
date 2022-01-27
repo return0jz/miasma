@@ -1,7 +1,7 @@
 class_name WeaponState
 extends PlayerState
 
-func attack():
+func attack(): # Overenginner lol
 	pass
 
 
